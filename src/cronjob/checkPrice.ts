@@ -12,27 +12,44 @@ export const checkPrice = async () => {
     const price = item.price;
     if (search.includes("amazon")) {
       const newPrice = await amazonSearch(search, undefined);
-      if (newPrice < price) {
-        id.forEach(async (item) => {
-          await bot.sendMessage(item, search + "\nPrice has dropped");
-        });
+      if (item.userNeededSize === "OneSize") {
+        await bot.sendMessage(id, search + "\nPrice has dropped");
+      } else {
+        await bot.sendMessage(
+          id,
+          search + "\nPrice has dropped for size " + item.userNeededSize
+        );
       }
     } else if (search.includes("flipkart")) {
       const newPrice = await flipkartSearch(search, undefined);
       if (newPrice < price) {
-        id.forEach(async (item) => {
-          await bot.sendMessage(item, search + "\nPrice has dropped");
-        });
+        if (item.userNeededSize === "OneSize") {
+          await bot.sendMessage(id, search + "\nPrice has dropped");
+        } else {
+          await bot.sendMessage(
+            id,
+            search + "\nPrice has dropped for size " + item.userNeededSize
+          );
+        }
       }
     } else if (search.includes("myntra")) {
-      const newPrice = await myntraSearch(search, undefined);
+      const newPrice = await myntraSearch(
+        search,
+        undefined,
+        item.userNeededSize
+      );
       if (newPrice < price) {
-        id.forEach(async (item) => {
-          await bot.sendMessage(item, search + "\nPrice has dropped");
-        });
+        if (item.userNeededSize === "OneSize") {
+          await bot.sendMessage(id, search + "\nPrice has dropped");
+        } else {
+          await bot.sendMessage(
+            id,
+            search + "\nPrice has dropped for size " + item.userNeededSize
+          );
+        }
       }
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   });
 };

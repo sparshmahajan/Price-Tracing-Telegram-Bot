@@ -15,7 +15,7 @@ export const amazonSearch = async (search: string, id: string | undefined) => {
     await browser.close();
 
     if (id !== undefined) {
-      saveToDB(search, id, price);
+      saveToDB(search, id, price, 'OneSize');
     }
     return price;
   } catch (err) {

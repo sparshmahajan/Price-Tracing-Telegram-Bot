@@ -82,29 +82,38 @@ try {
       return;
     }
 
+    const url = msg.text.split(" ")[0];
+    const userSize = msg.text.split(" ")[1];
     if (
-      msg.text !== undefined &&
+      url !== undefined &&
       msg.entities !== undefined &&
       msg.entities[0]?.type === "url"
     ) {
-      if (msg.text.includes("amazon.in")) {
-        const price: number = await amazonSearch(msg.text, msg.chat.id);
+      if (url.includes("amazon.in")) {
+        const price: number = await amazonSearch(url, msg.chat.id);
         bot.sendMessage(
           msg.chat.id,
           "Your Amazon product price is " +
             price +
             " and it is added to our database for tracking."
         );
-      } else if (msg.text.includes("flipkart.com")) {
-        const price: number = await flipkartSearch(msg.text, msg.chat.id);
+      } else if (url.includes("flipkart.com")) {
+        const price: number = await flipkartSearch(url, msg.chat.id);
         bot.sendMessage(
           msg.chat.id,
           "Your Flipkart product price is " +
             price +
             " and it is added to our database for tracking."
         );
-      } else if (msg.text.includes("myntra.com")) {
-        const price: number = await myntraSearch(msg.text, msg.chat.id);
+      } else if (url.includes("myntra.com")) {
+        const price: number = await myntraSearch(url, msg.chat.id, userSize);
+        if( price === undefined ) {
+          bot.sendMessage(msg.chat.id, "Some error occured. Please try again.");
+          return;
+        } else if( price === 1e9 ) {
+          bot.sendMessage(msg.chat.id, "Size not available for this product , we will notify you when it is available.");
+          return;
+        }
         bot.sendMessage(
           msg.chat.id,
           "Your Myntra product price is " +

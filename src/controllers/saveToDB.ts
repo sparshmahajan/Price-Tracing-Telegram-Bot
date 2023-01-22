@@ -1,20 +1,14 @@
 import Pricing from "../models/price.model";
 
-export const saveToDB = async (search: string, id: string, price: number) => {
-  console.log(id);
-  const find = await Pricing.findOne({ product: search });
-  if (find) {
-    const update = await Pricing.findOneAndUpdate(
-        { product : search }, { $addToSet: { userId: id } } , { new: true }
-    );
-
-  } else {
-    const array = [id];
-    const pricing = new Pricing({
+export const saveToDB = async (search: string, id: string, price: number, userNeededSize: string) => {
+  const find = await Pricing.findOne({ $and: [{ product: search }, { userId: id } , { userNeededSize: userNeededSize }] });
+  if (!find) {
+    const newPrice = new Pricing({
       product: search,
-      userId: array,
+      userId: id,
       price: price,
+      userNeededSize: userNeededSize,
     });
-    pricing.save();
-  }
+    await newPrice.save();
+  } 
 };

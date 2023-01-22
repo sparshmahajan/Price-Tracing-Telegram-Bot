@@ -13,11 +13,15 @@ const pricingSchema = new mongoose.Schema({
         unique: true,
     },
     userId: {
-        type: [String],
+        type: String,
         required: true,
     },
     price: {
         type: Number,
+        required: true,
+    },
+    userNeededSize: {
+        type: String,
         required: true,
     },
     createdAt: {
