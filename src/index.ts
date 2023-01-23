@@ -12,7 +12,7 @@ const token = process.env.BOT_TOKEN;
 if (token === undefined) {
   throw new Error("Bot token not found");
 }
-export const bot = new TelegramBot(token, { polling: true });
+export const bot = new TelegramBot(token);
 
 import cron from "./cronjob";
 
@@ -107,11 +107,14 @@ try {
         );
       } else if (url.includes("myntra.com")) {
         const price: number = await myntraSearch(url, msg.chat.id, userSize);
-        if( price === undefined ) {
+        if (price === undefined) {
           bot.sendMessage(msg.chat.id, "Some error occured. Please try again.");
           return;
-        } else if( price === 1e9 ) {
-          bot.sendMessage(msg.chat.id, "Size not available for this product , we will notify you when it is available.");
+        } else if (price === 1e9) {
+          bot.sendMessage(
+            msg.chat.id,
+            "Size not available for this product , we will notify you when it is available."
+          );
           return;
         }
         bot.sendMessage(
