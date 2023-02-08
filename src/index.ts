@@ -12,7 +12,7 @@ const token = process.env.BOT_TOKEN;
 if (token === undefined) {
   throw new Error("Bot token not found");
 }
-export const bot = new TelegramBot(token);
+export const bot = new TelegramBot(token as string, { polling: true });
 
 import cron from "./cronjob";
 
@@ -20,6 +20,7 @@ try {
   cron();
   console.log("Bot started");
   bot.onText(/\/start/, async (msg) => {
+    console.log(msg);
     bot.sendMessage(
       msg.chat.id,
       "Welcome " +
