@@ -20,7 +20,6 @@ try {
   cron();
   console.log("Bot started");
   bot.onText(/\/start/, async (msg) => {
-    console.log(msg);
     bot.sendMessage(
       msg.chat.id,
       "Welcome " +
