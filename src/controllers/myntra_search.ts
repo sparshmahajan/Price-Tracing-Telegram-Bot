@@ -3,10 +3,13 @@ import { saveToDB } from "./saveToDB";
 
 export const myntraSearch = async (search: string, id: string | undefined , userSize : string | undefined) => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      headless: false,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
     const [page] = await browser.pages();
 
-    const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36';
     await page.goto(search);
 
     const getAvailableSizes = await page.evaluate((userSize : string | undefined) => {
